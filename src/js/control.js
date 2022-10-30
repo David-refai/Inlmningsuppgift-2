@@ -61,6 +61,9 @@ const animate = function() {
 
 animate();
 
+console.log("test");
+
+
 
 
 
