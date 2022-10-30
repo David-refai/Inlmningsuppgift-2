@@ -1,55 +1,43 @@
-
-const canvas = document.querySelector("canvas");
-const ctx = canvas.getContext("2d");
-export default class Player {
-//   canvas = CANVAS
-//   ctx = CTX;
-    // canvasWidth = this.canvas.width;
-    // canvasHeight = this.canvas.height;
-constructor() {
-    this.position = {
-        x: 100,
-        y: 100
-    };
-    this.velocity = {
-        x: 0,
-        y: 0
-    };
-    const image = new Image();
-    image.src = "../image/spaceship.png";
-    image.onload = () => {
-    this.image = image;
-    this.width = image.width;
-    this.height = image.height;
-    }
-
-    // this.color = color;
-    this.dx = 2;
-    this.dy = 2;
+import {canvas, ctx} from "./config.js";
 
 
-    this.score = 0;
-  }
+class Player {
 
-  draw() {
-    if(this.image) 
-    ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
-    // console.log("draw");
-    
-    // ctx.beginPath();
-   
-    // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-
-    // ctx.closePath();
-  }
-
-  update() {
-    // this.draw();
-
-    this.position.x += this.dx;
-    this.position.y += this.dy;
+  constructor(position) {
+      this.position = position;
+      this.velocity = {
+          x: 0,
+          y: 0
+      };
+      const image = new Image();
+      image.src = "./src/image/spaceship.png";
+      image.onload = () => {
+          const scale = 0.15;
+          this.image = image;
+          this.width = image.width * scale;
+          this.height = image.height * scale;
+          // this.position.x = canvas.width / 2 - this.width / 2;
+          // this.position.y = canvas.height - this.height - 10;
+          
+      }
   }
   
-}
+      draw(ctx) {
+     
+          if(this.image)
+              ctx.drawImage(
+                  this.image,
+                  this.position.x,
+                  this.position.y,
+                  this.width ,
+                  this.height
+                  );
+              
+                
+  
+          
+  }
+  
+  }
 
-
+  export default Player;
