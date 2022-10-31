@@ -18,19 +18,18 @@ class Player {
     };
   }
 
-  draw() {
-    if (this.image)
-      ctx.drawImage(
-        this.image,
-        this.position.x,
-        this.position.y,
-        this.width,
-        this.height
-      );
+  _draw() {
+    ctx.drawImage(
+      this.image,
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
   }
 
   update() {
-    this.draw();
+    if (this.image) this._draw();
     this.position.y += this.velocity.y;
   }
 
@@ -40,6 +39,17 @@ class Player {
       this.position.x + this.width - 20 > enemy.position.x &&
       this.position.y < enemy.position.y + enemy.radius &&
       this.position.y + this.height > enemy.position.y
+    ) {
+      return true;
+    }
+  }
+
+  colliedWithProjectile(projectile) {
+    if (
+      this.position.x < projectile.position.x + projectile.radius &&
+      this.position.x + this.width > projectile.position.x &&
+      this.position.y < projectile.position.y + projectile.radius &&
+      this.position.y + this.height > projectile.position.y
     ) {
       return true;
     }

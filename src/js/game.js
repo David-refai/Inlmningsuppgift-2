@@ -1,7 +1,7 @@
 import Player from "./players.js";
 import { canvas, ctx } from "./config.js";
 import Enemy from "./enemy.js";
-import Projectile from "./projectile.js";
+import Controls from "./control.js";
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -15,19 +15,11 @@ const playerTwo = new Player({
   y: canvas.height - 50,
 });
 
-const players = [playerOne, playerTwo];
+export const players = [playerOne, playerTwo];
 const enemies = [];
-const projectiles = [];
-let ball;
+export const projectiles = [];
 
-
-
-
-//? this method to push enemy to the array, and it will be called in the gameLoop
 const init = function () {
-
-  
-
   if (Math.random() < 0.06) {
     const enemyLeftSide = new Enemy(
       { x: canvas.width + 100, y: Math.random() * canvas.height - 150 },
@@ -41,39 +33,44 @@ const init = function () {
     enemies.push(enemyRightSide);
   }
 
-for (let i = 0; i < enemies.length; i++) {
-    enemies[i].update();
+  for (let i = 0; i < enemies.length; i++) {
+    // enemies[i].update();
     players.forEach((player) => {
-        if (player.colliedWithEnemy(enemies[i])) {
-            player.position.y = -player.height;
-        }
-        });
+      if (player.colliedWithEnemy(enemies[i])) {
+        player.position.y = -player.height;
+      }
+    });
+
+    for (let j = 0; j < projectiles.length; j++) {
+      if (projectiles[j].collidedWithEnemy(enemies[i])) {
+        enemies.splice(i, 1);
+        projectiles.splice(j, 1);
+      }
+    }
   }
-//   enemies.forEach((enemy) => {
-//     enemy.update();
-// });
+
   players.forEach((player) => {
     player.update();
-     
-    if (player.position.y < -player.height || player.position.y > canvas.height) {
+
+    if (player.position.y < -player.height) {
       player.position.y = canvas.height - 50;
       player.score++;
-      
     }
 
-    if (player.position.y > canvas.height - 30) {
-      player.position.y = -player.height;
-     
-      
-    }
-   
-  
-});
-  projectiles.forEach((projectile) => {
-    projectile.update();
-    if (projectile.position.y < 0) {
-      projectiles.splice(projectiles.indexOf(projectile), 1);
-    }
+    // if(player.position.y + player.height > canvas.height - 50){
+    //     player.velocity.y = 0;
+    //   }
+
+    projectiles.forEach((projectile) => {
+      projectile.update();
+
+      if (playerOne.colliedWithProjectile(projectile)) {
+        playerOne.position.y = -playerOne.height - 50;
+      }
+      if (playerTwo.colliedWithProjectile(projectile)) {
+        playerTwo.position.y = -playerTwo.height - 50;
+      }
+    });
   });
 };
 
@@ -91,82 +88,14 @@ const draw = function () {
   ctx.closePath();
 };
 
-const map = {
-  KeyW: "up",
-  KeyS: "down",
-  KeyX: "space",
-  ArrowUp: "up2",
-  ArrowDown: "down2",
-  Space: "space2",
-};
-
-const keyDownHandler = function (event) {
-  const key = event.code;
-  const player = map[key];
-  if (player === "up") {
-    playerOne.velocity.y = -1;
-  }
-  if (player === "up2") {
-    playerTwo.velocity.y = -1;
-  }
-  if (player === "down") {
-    playerOne.velocity.y = 0.5;
-  }
-  if (player === "down2") {
-    playerTwo.velocity.y = 0.5;
-  }
-  if (player === "space") {
-    projectiles.push(
-      new Projectile({
-        position: {
-          x: playerOne.position.x + playerOne.width / 2,
-          y: playerOne.position.y,
-        },
-        velocity: { x: 0, y: -5 },
-      })
-    );
-  }
-  if (player === "space2") {
-    projectiles.push(
-      new Projectile({
-        position: {
-          x: playerTwo.position.x + playerTwo.width / 2,
-          y: playerTwo.position.y,
-        },
-        velocity: { x: 0, y: -5 },
-      })
-    );
-  }
-};
-
-const keyUpHandler = function (event) {
-  const key = event.code;
-  const player = map[key];
-  if (player === "up") {
-    playerOne.velocity.y = 0;
-  }
-  if (player === "up2") {
-    playerTwo.velocity.y = 0;
-  }
-  if (player === "down") {
-    playerOne.velocity.y = 0;
-  }
-  if (player === "down2") {
-    playerTwo.velocity.y = 0;
-  }
-};
-
-addEventListener("keydown", keyDownHandler);
-addEventListener("keyup", keyUpHandler);
-
 const gameLoop = function () {
   requestAnimationFrame(gameLoop);
   ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   init();
   draw();
-
   playerOne.position.y += playerOne.velocity.y;
   playerTwo.position.y += playerTwo.velocity.y;
 };
 gameLoop();
+new Controls();

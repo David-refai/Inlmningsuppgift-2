@@ -35,6 +35,17 @@ class Projectile{
             this.update();
     }
 
+    collidedWithEnemy(enemy){
+        if(
+            this.position.x < enemy.position.x + enemy.radius &&
+            this.position.x + this.radius > enemy.position.x &&
+            this.position.y < enemy.position.y + enemy.radius &&
+            this.position.y + this.radius > enemy.position.y
+        ){
+            return true;
+        }
+    }
+
 
 }
 
