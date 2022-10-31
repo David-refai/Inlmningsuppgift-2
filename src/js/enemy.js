@@ -1,3 +1,5 @@
+import {ctx} from "./config.js";
+
 class Enemy {
   constructor(position, velocity) {
     this.position = position;
@@ -6,7 +8,9 @@ class Enemy {
     this.speed = 0.5;
   }
 
-  draw(ctx) {
+  
+
+  draw() {
     ctx.beginPath();
     ctx.arc(
       this.position.x,
@@ -21,8 +25,8 @@ class Enemy {
     ctx.closePath();
   }
 
-  update(ctx) {
-    this.draw(ctx);
+  update() {
+    this.draw();
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
   }
