@@ -7,7 +7,7 @@ class Player {
       x: 0,
       y: 0,
     };
-    this.score = 0;
+    this.score = 10;
     const image = new Image();
     image.src = "./src/image/spaceship.png";
     image.onload = () => {
@@ -16,6 +16,20 @@ class Player {
       this.width = image.width * scale;
       this.height = image.height * scale;
     };
+  }
+
+
+  increaseScore() {
+    this.score++;
+  }
+
+  decreaseScore() {
+    this.score--;
+  }
+ 
+
+  getScore() {
+    return this.score;
   }
 
   _draw() {
@@ -33,27 +47,39 @@ class Player {
     this.position.y += this.velocity.y;
   }
 
-  colliedWithEnemy(enemy) {
-    if (
-      this.position.x < enemy.position.x + enemy.radius - 20 &&
-      this.position.x + this.width - 20 > enemy.position.x &&
-      this.position.y < enemy.position.y + enemy.radius &&
-      this.position.y + this.height > enemy.position.y
-    ) {
-      return true;
-    }
+
+  colliedWithBottomCanvas() {
+   if(this.position.y + this.height + 10 > canvas.height){
+       this.position.y = canvas.height - this.height - 10;
+       this.velocity.y = 0;
+   }
   }
 
   colliedWithProjectile(projectile) {
     if (
-      this.position.x < projectile.position.x + projectile.radius &&
-      this.position.x + this.width > projectile.position.x &&
-      this.position.y < projectile.position.y + projectile.radius &&
-      this.position.y + this.height > projectile.position.y
+      projectile.position.x > this.position.x &&
+      projectile.position.x < this.position.x + this.width &&
+      projectile.position.y > this.position.y &&
+      projectile.position.y < this.position.y + this.height
     ) {
+      this.decreaseScore();
+      return true;
+        }
+  }
+
+  colliedWithEnemy(enemy) {
+    if (
+      enemy.position.x > this.position.x &&
+      enemy.position.x < this.position.x + this.width &&
+      enemy.position.y > this.position.y &&
+      enemy.position.y < this.position.y + this.height
+    ) {
+      this.decreaseScore();
       return true;
     }
   }
+
+
 }
 
 export default Player;
