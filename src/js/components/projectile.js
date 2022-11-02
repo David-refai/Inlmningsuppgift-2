@@ -1,4 +1,4 @@
-    import {ctx} from "./config.js";
+    import {ctx} from "../config.js";
 
 class Projectile{
     constructor({position, velocity}){

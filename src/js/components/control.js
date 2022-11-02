@@ -1,5 +1,6 @@
-import { players, projectiles } from "./config.js";
-import Projectile from "./projectile.js";
+import * as model from "../model.js";
+
+import { TIMEOUT_SEC } from "../config.js";
 
 class Controls {
   _map = {};
@@ -12,8 +13,8 @@ class Controls {
       ArrowDown: "down2",
       Space: "space2",
     };
-    this.playerOne = players[0];
-    this.playerTwo = players[1];
+    this.playerOne = model.state.players[0];
+    this.playerTwo = model.state.players[1];
     this.TimeToFire = true;
     this.TimeToFire2 = true;
 
@@ -21,27 +22,10 @@ class Controls {
     document.addEventListener("keyup", this._keyUpHandler.bind(this));
   }
 
-  _setTimerOne() {
-    setTimeout(() => {
-      this.TimeToFire = true;
-    }, 3000);
-  }
-
-  _setTimerTow() {
-    setTimeout(() => {
-      this.TimeToFire2 = true;
-    }, 3000);
-  }
-
-  _createProjectiles(player, velocity) {
-    projectiles.push(new Projectile({
-      position: {
-        x: player.position.x + player.width / 2,
-        y: player.position.y,
-      },
-      velocity: velocity,
-    }));
-   
+  _timeout(cb) {
+    setTimeout(function () {
+      cb(true);
+    }, TIMEOUT_SEC);
   }
 
   _keyDownHandler(event) {
@@ -61,15 +45,18 @@ class Controls {
     }
 
     if (player === "space" && this.TimeToFire) {
-      this._createProjectiles(this.playerOne, { x: 3, y: 0 });
-      this._setTimerOne();
       this.TimeToFire = false;
+      model.createProjectiles(this.playerOne, { x: 3, y: 0 });
+      this._timeout((cb) => {
+        this.TimeToFire = cb;
+      });
     }
     if (player === "space2" && this.TimeToFire2) {
-      this._createProjectiles(this.playerTwo, { x: -3, y: 0 });
-
-      this._setTimerTow();
       this.TimeToFire2 = false;
+      model.createProjectiles(this.playerTwo, { x: -3, y: 0 });
+      this._timeout((cb) => {
+        this.TimeToFire2 = cb;
+      });
     }
   }
 

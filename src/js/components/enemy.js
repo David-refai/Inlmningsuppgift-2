@@ -1,4 +1,4 @@
-import {ctx} from "./config.js";
+import {ctx} from "../config.js";
 
 class Enemy {
   constructor(position, velocity) {

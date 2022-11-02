@@ -1,4 +1,4 @@
-import { canvas, ctx } from "./config.js";
+import { canvas, ctx } from "../config.js";
 
 class Player {
   constructor(position) {
@@ -7,7 +7,7 @@ class Player {
       x: 0,
       y: 0,
     };
-    this.score = 10;
+    this.score = 0;
     const image = new Image();
     image.src = "./src/image/spaceship.png";
     image.onload = () => {
@@ -20,10 +20,12 @@ class Player {
 
 
   increaseScore() {
+    
     this.score++;
   }
 
   decreaseScore() {
+    if(this.score > 0)
     this.score--;
   }
  
@@ -47,6 +49,13 @@ class Player {
     this.position.y += this.velocity.y;
   }
 
+  colliedWithTopCanvas() {
+
+    if(this.position.y < 0){
+      return true;
+    }
+    
+  }
 
   colliedWithBottomCanvas() {
    if(this.position.y + this.height + 10 > canvas.height){

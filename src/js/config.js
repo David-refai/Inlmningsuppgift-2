@@ -1,4 +1,4 @@
-import Player from "./players.js";
+import Player from "./components/players.js";
 
 export const canvas = document.querySelector("canvas");
 export const ctx = canvas.getContext("2d");
@@ -16,5 +16,5 @@ export const playerTwo = new Player({
   y: canvas.height - 50,
 });
 
-export const players = [playerOne, playerTwo];
-export const projectiles = [];
+export const TIMEOUT_SEC = 3000
+
