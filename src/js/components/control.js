@@ -22,10 +22,12 @@ class Controls {
     document.addEventListener("keyup", this._keyUpHandler.bind(this));
   }
 
-  _timeout(cb) {
-    setTimeout(function () {
-      cb(true);
-    }, TIMEOUT_SEC);
+  _timePress() {
+     return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, TIMEOUT_SEC);
+    })
   }
 
   _keyDownHandler(event) {
@@ -46,17 +48,13 @@ class Controls {
 
     if (player === "space" && this.TimeToFire) {
       this.TimeToFire = false;
-      model.createProjectiles(this.playerOne, { x: 3, y: 0 });
-      this._timeout((cb) => {
-        this.TimeToFire = cb;
-      });
+      model.createProjectiles(this.playerOne, { x: 5, y: 0 });
+      this._timePress().then(() => this.TimeToFire = true);
     }
     if (player === "space2" && this.TimeToFire2) {
       this.TimeToFire2 = false;
-      model.createProjectiles(this.playerTwo, { x: -3, y: 0 });
-      this._timeout((cb) => {
-        this.TimeToFire2 = cb;
-      });
+      model.createProjectiles(this.playerTwo, { x: -5, y: 0 });
+      this._timePress().then(() => this.TimeToFire2 = true);
     }
   }
 

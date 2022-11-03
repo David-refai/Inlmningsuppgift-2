@@ -7,7 +7,7 @@ class Player {
       x: 0,
       y: 0,
     };
-    this.score = 0;
+    this._score = 8;
     const image = new Image();
     image.src = "./src/image/spaceship.png";
     image.onload = () => {
@@ -20,18 +20,16 @@ class Player {
 
 
   increaseScore() {
-    
-    this.score++;
+   return this._score++;
   }
 
-  decreaseScore() {
-    if(this.score > 0)
-    this.score--;
+  decreaseScore(score){
+    this._score -= score;
+    return this._score;
   }
- 
 
-  getScore() {
-    return this.score;
+  get score() {
+    return this._score;
   }
 
   _draw() {
@@ -49,9 +47,21 @@ class Player {
     this.position.y += this.velocity.y;
   }
 
+
+  playerPosition () {
+ 
+    if (this.position.y < -this.height) {
+      this.position.y = canvas.height - 10;
+    }else{
+      this.position.y = canvas.height - this.height - 10;
+      this.velocity.y = 0;
+    }
+  };
+
   colliedWithTopCanvas() {
 
-    if(this.position.y < 0){
+    if(this.position.y < -this.height){
+      this.position.y = canvas.height - 10;
       return true;
     }
     
@@ -71,7 +81,7 @@ class Player {
       projectile.position.y > this.position.y &&
       projectile.position.y < this.position.y + this.height
     ) {
-      this.decreaseScore();
+    
       return true;
         }
   }
@@ -83,7 +93,6 @@ class Player {
       enemy.position.y > this.position.y &&
       enemy.position.y < this.position.y + this.height
     ) {
-      this.decreaseScore();
       return true;
     }
   }
