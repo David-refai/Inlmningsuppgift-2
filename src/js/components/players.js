@@ -7,7 +7,7 @@ class Player {
       x: 0,
       y: 0,
     };
-    this._score = 8;
+    this._score = 0;
     const image = new Image();
     image.src = "./src/image/spaceship.png";
     image.onload = () => {
@@ -24,7 +24,9 @@ class Player {
   }
 
   decreaseScore(score){
-    this._score -= score;
+    if(this._score > 0){
+      this._score -= score;
+    }
     return this._score;
   }
 

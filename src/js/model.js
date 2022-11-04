@@ -1,6 +1,19 @@
 import Enemy from "./components/enemy.js";
-import { playerOne, playerTwo, canvas } from "./config.js";
+import { playerOne, playerTwo, canvas, ENEMY_SPEED, ENEMY_DENSITY } from "./config.js";
 import Projectile from "./components/projectile.js";
+
+
+/**
+ * @file - The file that contains the state of the game
+ * @function - The function that is called
+ * @param {object} Player - The object that is called
+ * 
+
+
+
+*/
+
+
 
 export const state = {
   players: [playerOne, playerTwo],
@@ -8,6 +21,9 @@ export const state = {
   projectiles: [],
 };
 
+/**
+ *  @callback requestCallback
+ */
 export const playerVelocity = function () {
   state.players[0].position.y += state.players[0].velocity.y;
   state.players[1].position.y += state.players[1].velocity.y;
@@ -15,18 +31,18 @@ export const playerVelocity = function () {
 
 export const createAndPushEnemy = function () {
   //? function to create enemy
-  if (Math.random() < 0.02) {
+  if (Math.random() < ENEMY_DENSITY) {
     //? 1. Create enemy as coming from the left side of the canvas
     const enemyLeftSide = new Enemy(
       { x: canvas.width + 100, y: Math.random() * canvas.height - 150 },
-      { x: -1, y: 0 }
+      { x: -ENEMY_SPEED, y: 0 }
     );
     state.enemies.push(enemyLeftSide);
 
     //? 2. Create enemy as coming from the right side of the canvas
     const enemyRightSide = new Enemy(
       { x: 0, y: Math.random() * canvas.height - 150 },
-      { x: 1, y: 0 }
+      { x: ENEMY_SPEED, y: 0 }
     );
     state.enemies.push(enemyRightSide);
   }
@@ -71,6 +87,12 @@ export const loopEnemies = function (player) {
   }
 };
 
+//* function to push the projectiles into the state
+/**
+ * 
+ * @param {player} player 
+ * @param {x: , y:} velocity 
+ */
 export const createProjectiles = function (player, velocity) {
   state.projectiles.push(
     new Projectile({
@@ -84,6 +106,11 @@ export const createProjectiles = function (player, velocity) {
 };
 
 //? 4. Check for collision between projectiles and enemies
+
+/**
+ * @function - The function that is called
+ * @param {Object} Player - The x position of the player
+ */
 
 export const init = function () {
   //? 1. Draw the player

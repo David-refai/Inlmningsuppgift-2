@@ -1,6 +1,5 @@
 import { canvas, ctx } from "./config.js";
 import * as model from "./model.js";
-import { TIMEOUT_SEC } from "./config.js";
 
 //? function to draw the score on the canvas, and the score is updated in the players.js file
 export const scoreDrawing = function () {
@@ -20,8 +19,3 @@ export const scoreDrawing = function () {
   ctx.stroke();
   ctx.closePath();
 };
-
-
-
-
-

@@ -1,7 +1,12 @@
 import * as model from "../model.js";
+import { PLAYER_SPEED, TIMEOUT_SEC } from "../config.js";
 
-import { TIMEOUT_SEC } from "../config.js";
-
+ /**
+  * @function - The function that is called
+  * @class - Control -> That is send to the game file to be called
+ 
+ 
+ */
 class Controls {
   _map = {};
   constructor() {
@@ -23,38 +28,34 @@ class Controls {
   }
 
   _timePress() {
-     return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, TIMEOUT_SEC);
-    })
+    return new Promise((resolve) => setTimeout(resolve, TIMEOUT_SEC));
   }
 
   _keyDownHandler(event) {
     const key = event.code;
     const player = this._map[key];
     if (player === "up") {
-      this.playerOne.velocity.y = -1;
+      this.playerOne.velocity.y = -PLAYER_SPEED;
     }
     if (player === "up2") {
-      this.playerTwo.velocity.y = -1;
+      this.playerTwo.velocity.y = -PLAYER_SPEED;
     }
     if (player === "down") {
-      this.playerOne.velocity.y = 1;
+      this.playerOne.velocity.y = PLAYER_SPEED;
     }
     if (player === "down2") {
-      this.playerTwo.velocity.y = 1;
+      this.playerTwo.velocity.y = PLAYER_SPEED;
     }
 
     if (player === "space" && this.TimeToFire) {
       this.TimeToFire = false;
       model.createProjectiles(this.playerOne, { x: 5, y: 0 });
-      this._timePress().then(() => this.TimeToFire = true);
+      this._timePress().then(() => (this.TimeToFire = true));
     }
     if (player === "space2" && this.TimeToFire2) {
       this.TimeToFire2 = false;
       model.createProjectiles(this.playerTwo, { x: -5, y: 0 });
-      this._timePress().then(() => this.TimeToFire2 = true);
+      this._timePress().then(() => (this.TimeToFire2 = true));
     }
   }
 
