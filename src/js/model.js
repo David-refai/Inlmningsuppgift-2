@@ -7,10 +7,7 @@ import Projectile from "./components/projectile.js";
  * @file - The file that contains the state of the game
  * @function - The function that is called
  * @param {object} Player - The object that is called
- * 
-
-
-
+ *
 */
 
 
@@ -63,16 +60,16 @@ export const loopProjectiles = function (player) {
       state.projectiles.splice(j, 1);
 
       /**
-       * @condition - if the player's health is less than or equal to 0    
+       * @condition - if the player's shot hits the another player, the score will be increased by 1, and the second player will be moved to the bottom of the canvas and lose 1 life  
        * @score - the score of the player   
        * */
-      if (player === state.players[0]) {
-        state.players[1].increaseScore();
-        player.decreaseScore(1);
-      } else {
-        state.players[0].increaseScore();
-        player.decreaseScore(1);
-      }
+      // if (player === state.players[0]) {
+      //   state.players[1].increaseScore();
+      //   player.decreaseScore(1);
+      // } else {
+      //   state.players[0].increaseScore();
+      //   player.decreaseScore(1);
+      // }
     }
   }
 };
@@ -89,7 +86,9 @@ export const loopEnemies = function (player) {
     if (player.colliedWithEnemy(state.enemies[i]) === true) {
       player.playerPosition();
       state.enemies.splice(i, 1);
-      player.decreaseScore(1);
+
+      //? if the player collides with the enemy, the score will be decreased by 1.
+      // player.decreaseScore(1);
     }
   }
 };
@@ -113,7 +112,6 @@ export const createProjectiles = function (player, velocity) {
   );
 };
 
-//? 4. Check for collision between projectiles and enemies
 
 /**
  * @function - init - The function that is called to initialize the game  
