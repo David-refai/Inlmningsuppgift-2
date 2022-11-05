@@ -15,7 +15,8 @@ export const playerTwo = new Player({
   y: canvas.height - 50,
 });
 
-
+//? Through this declaration, we can use staple of variables in the other files,
+//? otherwise we don't need to change the code in all the files if we want to change the canvas size or the speed of the enemy
 export const TIMEOUT_SEC = 3000;
 export const ENEMY_DENSITY = 0.03;
 export const ENEMY_SPEED = 3;
